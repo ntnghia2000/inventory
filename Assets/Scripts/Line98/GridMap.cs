@@ -20,17 +20,14 @@ namespace Line98
 
         private Tile[,] _gridMap;
 
-        private void Start()
+        public void CreateGrid(Tile cell)
         {
             _tileRb = _tile.GetComponent<SpriteRenderer>();
             _cellSize = _tileRb.size.x;
 
             _gridMap = new Tile[_numberOfSize, _numberOfSize];
-        }
 
-        public void CreateGrid(Tile cell)
-        {
-            for(int i = 0; i < _gridMap.GetLength(0); i++)
+            for (int i = 0; i < _gridMap.GetLength(0); i++)
             {
                 for(int j = 0; j < _gridMap.GetLength(1); j++)
                 {
@@ -60,6 +57,11 @@ namespace Line98
             int x, y;
             GetXY(worldPos, out x, out y);
             SetColour(y, x, color);
-        }    
+        }
+        
+        public int NumberOfSize
+        {
+            get => _numberOfSize;
+        }
     }
 }

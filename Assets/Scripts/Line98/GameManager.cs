@@ -17,8 +17,10 @@ namespace Line98
         void Start()
         {
             _grid = GetComponent<GridMap>();
-
             _grid.CreateGrid(_cell);
+
+            _camera.transform.position = 
+                new Vector3((float)_grid.NumberOfSize / 2 - 0.5f, (float)_grid.NumberOfSize / 2 - 0.5f, -10f);
         }
 
         private void Update()
