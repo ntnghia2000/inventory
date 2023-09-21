@@ -5,39 +5,61 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Diagnostics;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Line98
 {
     public class GridMap: MonoBehaviour
     {
+        [SerializeField] private GameObject _tile;
+        [SerializeField] private int _numberOfSize = 3;
+
+        private SpriteRenderer _tileRb;
+
         private float _cellSize;
+
         private Tile[,] _gridMap;
 
-        public GridMap(int value, float cellSize)
+        private void Start()
         {
-            _cellSize = cellSize;
-            _gridMap = new Tile[value, value];
+            _tileRb = _tile.GetComponent<SpriteRenderer>();
+            _cellSize = _tileRb.size.x;
+
+            _gridMap = new Tile[_numberOfSize, _numberOfSize];
         }
 
-        public void createGrid(Tile cell)
+        public void CreateGrid(Tile cell)
         {
             for(int i = 0; i < _gridMap.GetLength(0); i++)
             {
                 for(int j = 0; j < _gridMap.GetLength(1); j++)
                 {
-                    _gridMap[i, j] = Instantiate(cell, getWorldPosition(i, j), Quaternion.identity);
+                    _gridMap[i, j] = Instantiate(cell, GetWorldPosition(i, j), Quaternion.identity);
                 }
             }
         }
 
-        private Vector3 getWorldPosition(int width, int heigth) 
+        private Vector3 GetWorldPosition(int width, int heigth) 
         {
             return new Vector3(width, heigth, 0) * _cellSize;
         }
 
-        public void setColour(int i, int j, Color color) 
+        private void GetXY(Vector3 worldPos, out int x, out int y)
         {
-            _gridMap[i, j].setColour(color);
+            x = Mathf.FloorToInt(worldPos.x / _cellSize);
+            y = Mathf.FloorToInt(worldPos.y / _cellSize);
         }
+
+        public void SetColour(int i, int j, Color color) 
+        {
+            _gridMap[i, j].SetColour(color);
+        }
+
+        public void SetColorValue(Vector3 worldPos, Color color)
+        {
+            int x, y;
+            GetXY(worldPos, out x, out y);
+            SetColour(y, x, color);
+        }    
     }
 }

@@ -18,7 +18,7 @@ namespace Line98
             set { _inner = value; }
         }
 
-        public void setColour(Color colour)
+        public void SetColour(Color colour)
         {
             _inner.GetComponent<SpriteRenderer>().material.color = colour;
         }    

@@ -270,6 +270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1549454289}
   - component: {fileID: 1549454290}
+  - component: {fileID: 1549454291}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -304,10 +305,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdb25df4240b3e459f266e041a4499e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tile: {fileID: 6994159858893265202, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
-  _subTiles: []
   _cell: {fileID: 3980485117277659053, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
-  _boardSize: 3
+  _camera: {fileID: 814277396}
+--- !u!114 &1549454291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549454288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba2c74f3957ea944922ee80f0492618, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tile: {fileID: 6994159858893265202, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
+  _numberOfSize: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
