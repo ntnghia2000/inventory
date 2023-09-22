@@ -9,26 +9,26 @@ namespace Line98
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private Tile _cell;
         [SerializeField] private Camera _camera;
+        [SerializeField] private int _width = 3;
+        [SerializeField] private int _height = 3;
 
         private GridMap _grid;
 
         void Start()
         {
             _grid = GetComponent<GridMap>();
-            _grid.CreateGrid(_cell);
+            _grid.CreateGrid(_width, _height);
 
-            _camera.transform.position = 
-                new Vector3((float)_grid.NumberOfSize / 2 - 0.5f, (float)_grid.NumberOfSize / 2 - 0.5f, -10f);
+            //_camera.transform.position = 
+            //    new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
         }
 
         private void Update()
         {
             if(Input.GetMouseButtonDown(0))
             {
-                Vector3 mousePos = GetMousePosition();
-                _grid.SetColorValue(mousePos, Color.yellow);
+                _grid.SetColor(GetMousePosition(), Color.yellow);
             }
         }
 
