@@ -11,57 +11,54 @@ namespace Line98
 {
     public class GridMap: MonoBehaviour
     {
-        [SerializeField] private GameObject _tile;
-        [SerializeField] private int _numberOfSize = 3;
-
-        private SpriteRenderer _tileRb;
-
-        private float _cellSize;
+        [SerializeField] private SpriteRenderer _tileSR;
+        [SerializeField] private Tile _tile;
 
         private Tile[,] _gridMap;
 
-        public void CreateGrid(Tile cell)
-        {
-            _tileRb = _tile.GetComponent<SpriteRenderer>();
-            _cellSize = _tileRb.size.x;
+        private int _width = 0;
+        private int _height = 0;
 
-            _gridMap = new Tile[_numberOfSize, _numberOfSize];
+        public void CreateGrid(int width, int height)
+        {
+            _width = width;
+            _height = height;
+
+            _gridMap = new Tile[width, height];
 
             for (int i = 0; i < _gridMap.GetLength(0); i++)
             {
                 for(int j = 0; j < _gridMap.GetLength(1); j++)
                 {
-                    _gridMap[i, j] = Instantiate(cell, GetWorldPosition(i, j), Quaternion.identity);
+                    _gridMap[i, j] = Instantiate(_tile, GetWorldPosition(i, j), Quaternion.identity);
                 }
             }
         }
 
         private Vector3 GetWorldPosition(int width, int heigth) 
         {
-            return new Vector3(width, heigth, 0) * _cellSize;
+            return new Vector3(width, heigth, 0) * _tileSR.size.x;
         }
 
         private void GetXY(Vector3 worldPos, out int x, out int y)
         {
-            x = Mathf.FloorToInt(worldPos.x / _cellSize);
-            y = Mathf.FloorToInt(worldPos.y / _cellSize);
-        }
+            x = Mathf.FloorToInt(worldPos.x / _tileSR.size.x);
+            y = Mathf.FloorToInt(worldPos.y / _tileSR.size.y);
+        }    
 
-        public void SetColour(int i, int j, Color color) 
+        public void SetColor(int x, int y, Color color)
         {
-            _gridMap[i, j].SetColour(color);
+            if(x >= 0 && y >= 0 && x < _width && y < _height)
+            {
+                _gridMap[x, y].SetTileColor(color);
+            }    
         }
-
-        public void SetColorValue(Vector3 worldPos, Color color)
+        
+        public void SetColor(Vector3 worldPos, Color color)
         {
             int x, y;
             GetXY(worldPos, out x, out y);
-            SetColour(y, x, color);
-        }
-        
-        public int NumberOfSize
-        {
-            get => _numberOfSize;
-        }
+            SetColor(x, y, color);
+        }    
     }
 }
