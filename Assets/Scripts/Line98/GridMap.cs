@@ -44,21 +44,22 @@ namespace Line98
         {
             x = Mathf.FloorToInt(worldPos.x / _tileSR.size.x);
             y = Mathf.FloorToInt(worldPos.y / _tileSR.size.y);
-        }    
-
-        public void SetColor(int x, int y, Color color)
-        {
-            if(x >= 0 && y >= 0 && x < _width && y < _height)
-            {
-                _gridMap[x, y].SetTileColor(color);
-            }    
         }
-        
-        public void SetColor(Vector3 worldPos, Color color)
+
+        public void SetValue(int x, int y, int gCost, int hCost)
+        {
+            if (x >= 0 && y >= 0 && x < _width && y < _height)
+            {
+                _gridMap[x, y].SetValues(gCost, hCost);
+                _gridMap[x, y].SetActiveTMP(true);
+            }
+        }
+
+        public void SetValue(Vector3 worldPos, int gCost, int hCost)
         {
             int x, y;
             GetXY(worldPos, out x, out y);
-            SetColor(x, y, color);
-        }    
+            SetValue(x, y, gCost, hCost);
+        }
     }
 }

@@ -8,9 +8,10 @@ namespace Line98
     interface ITile
     {
         bool IsPassable { get; set; }
-        int GCost { get; set; }
-        int HCost { get; set; }
-        int FCost { get; set; }
+        int GCost { get; }
+        int HCost { get; }
+        int FCost { get;}
+        Vector3 TilePosition { get; }
     }
 
     public class Tile: MonoBehaviour, ITile
@@ -49,47 +50,36 @@ namespace Line98
         public int GCost
         {
             get => _gCost;
-            set { _gCost = value; }
         }
 
         public int HCost
         {
             get => _hCost;
-            set { _hCost = value; }
         }
 
         public int FCost
         {
             get => _fCost;
-            set { _fCost = value; }
         }
+
+        public Vector3 TilePosition
+        {
+            get => transform.position;
+        }    
 
         public void SetActiveTMP(bool isActive)
         {
+            _gCostTMP.text = GCost.ToString();
+            _hCostTMP.text = HCost.ToString();
+            _fCostTMP.text = FCost.ToString();
             _costContainer.SetActive(isActive);
         }
 
-        public void SetTileColor(Color color)
+        public void SetValues(int gCost, int hCost)
         {
-            _innerSR.color = color;
-        }
-        
-        public void SetGCost(int cost)
-        {
-            _gCost = cost;
-            _gCostTMP.text = _gCost.ToString();
-        }
-
-        public void SetHCost(int cost)
-        {
-            _hCost = cost;
-            _hCostTMP.text = _hCost.ToString();
-        }
-
-        public void SetFCost(int cost)
-        {
+            _gCost = gCost;
+            _hCost = hCost;
             _fCost = _gCost + _hCost;
-            _fCostTMP.text = _fCost.ToString();
         }
 
         private void OnMouseEnter()

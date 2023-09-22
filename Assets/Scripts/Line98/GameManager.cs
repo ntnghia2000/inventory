@@ -20,15 +20,15 @@ namespace Line98
             _grid = GetComponent<GridMap>();
             _grid.CreateGrid(_width, _height);
 
-            //_camera.transform.position = 
-            //    new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
+            _camera.transform.position =
+                new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
         }
 
         private void Update()
         {
             if(Input.GetMouseButtonDown(0))
             {
-                _grid.SetColor(GetMousePosition(), Color.yellow);
+                _grid.SetValue(GetMousePosition(), 10, 28);
             }
         }
 
