@@ -8,33 +8,44 @@ namespace Line98
     interface ITile
     {
         bool IsPassable { get; set; }
-        int GCost { get; }
-        int HCost { get; }
+        int GCost { get; set; }
+        int HCost { get; set; }
         int FCost { get;}
-        Vector3 TilePosition { get; }
+        Vector3 TilePosition { get; set; }
     }
 
-    public class Tile: MonoBehaviour, ITile
+    public class Tile: ITile
     {
-        [SerializeField] private SpriteRenderer _innerSR;
-        [SerializeField] private GameObject _highlight;
-        [SerializeField] private Color _baseColor;
-        [SerializeField] private Color _unpassableColor;
-        [SerializeField] private Color _passableColor;
-        [SerializeField] private GameObject _costContainer;
-        [SerializeField] private TextMeshPro _gCostTMP;
-        [SerializeField] private TextMeshPro _hCostTMP;
-        [SerializeField] private TextMeshPro _fCostTMP;
-
+        private Tile parent;
         private int _gCost = 0;
         private int _hCost = 0;
         private int _fCost = 0;
-
         private bool _isPassable = false;
+        private Vector3 _tilePosition;
 
-        private void Start()
+        private GameObject _tileGameObject;
+        private GameObject _textContainer;
+        private SpriteRenderer _innerObject;
+        private TextMeshPro _gCostTMP;
+        private TextMeshPro _hCostTMP;
+        private TextMeshPro _fCostTMP;
+        private Color _tileColor;
+
+        public Tile() 
         {
-            _innerSR.color = _innerSR.color != _baseColor ? _innerSR.color : _baseColor;
+            _gCost = _hCost = _fCost = 0;
+            _isPassable = false;
+            _tilePosition = new Vector3(0, 0, 0);
+            _tileGameObject = null;
+        }
+
+        public Tile(Vector3 tilePosition, GameObject tileObject, GameObject innerObject)
+        {
+            _gCost = _hCost = _fCost = 0;
+            _isPassable = false;
+            _tilePosition = tilePosition;
+            _tileGameObject = GameObject.Instantiate(tileObject, _tilePosition, Quaternion.identity);
+            _innerObject = innerObject.GetComponent<SpriteRenderer>();
         }
 
         public bool IsPassable
@@ -43,53 +54,56 @@ namespace Line98
             set 
             { 
                 _isPassable = value;
-                _innerSR.color = _isPassable ? _passableColor : _unpassableColor;
             }
         }
 
         public int GCost
         {
             get => _gCost;
+            set
+            {
+                _gCost = value;
+                _gCostTMP.text = _gCost.ToString();
+            }
         }
 
         public int HCost
         {
             get => _hCost;
+            set
+            {
+                _hCost = value;
+                _hCostTMP.text = _hCost.ToString();
+            }
         }
 
         public int FCost
         {
-            get => _fCost;
+            get => _fCost = _gCost + _hCost;
+        }
+
+        public void GatherElements(GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCost)
+        {
+            _textContainer = textContainer;
+            _gCostTMP = gCost;
+            _hCostTMP = hCost;
+            _fCostTMP = fCost;
         }
 
         public Vector3 TilePosition
         {
-            get => transform.position;
-        }    
-
-        public void SetActiveTMP(bool isActive)
-        {
-            _gCostTMP.text = GCost.ToString();
-            _hCostTMP.text = HCost.ToString();
-            _fCostTMP.text = FCost.ToString();
-            _costContainer.SetActive(isActive);
+            get => _tilePosition;
+            set { _tilePosition = value; }
         }
 
-        public void SetValues(int gCost, int hCost)
+        public void SetColor(Color color)
         {
-            _gCost = gCost;
-            _hCost = hCost;
-            _fCost = _gCost + _hCost;
+            _innerObject.color = color;
         }
 
-        private void OnMouseEnter()
+        public Tile GetTile()
         {
-            _highlight.SetActive(true);
-        }
-
-        private void OnMouseExit()
-        {
-            _highlight.SetActive(false);
+            return this;
         }
     }
 }

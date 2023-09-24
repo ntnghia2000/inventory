@@ -270,7 +270,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1549454289}
   - component: {fileID: 1549454290}
-  - component: {fileID: 1549454291}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -308,20 +307,7 @@ MonoBehaviour:
   _camera: {fileID: 814277396}
   _width: 3
   _height: 3
---- !u!114 &1549454291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549454288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ba2c74f3957ea944922ee80f0492618, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tileSR: {fileID: 2724476174941863335, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
-  _tile: {fileID: 9062600026958901803, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
+  _tileGameObject: {fileID: 6994159858893265202, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
