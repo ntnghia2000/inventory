@@ -26,7 +26,8 @@ namespace Line98
             TextMeshPro hCostTMP = textContainer.transform.Find("HCost").gameObject.GetComponent<TextMeshPro>();
             TextMeshPro fCostTMP = textContainer.transform.Find("FCost").gameObject.GetComponent<TextMeshPro>();
 
-            _pathFinding = new PathFinding(_width, _height, tileSize, _tileGameObject, innerObject, textContainer, gCostTMP, hCostTMP, fCostTMP);
+            _pathFinding = new PathFinding(_width, _height, tileSize);
+            _pathFinding.GatherElements(_tileGameObject, innerObject, textContainer, gCostTMP, hCostTMP, fCostTMP);
 
             _camera.transform.position =
                 new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
@@ -36,6 +37,16 @@ namespace Line98
         {
             if(Input.GetMouseButtonDown(0))
             {
+                int startX;
+                int startY;
+                _pathFinding.GetGrid().GetXY(GetMousePosition(), out startX, out startY);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                int endX;
+                int endY;
+                _pathFinding.GetGrid().GetXY(GetMousePosition(), out endX, out endY);
             }
         }
 

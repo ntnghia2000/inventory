@@ -11,16 +11,19 @@ namespace Line98
         int GCost { get; set; }
         int HCost { get; set; }
         int FCost { get;}
-        Vector3 TilePosition { get; set; }
+        int Col { get; set; } 
+        int Row { get; set; }
     }
 
     public class Tile: ITile
     {
-        private Tile parent;
+        private Tile _parent;
         private int _gCost = 0;
         private int _hCost = 0;
         private int _fCost = 0;
         private bool _isPassable = false;
+        private int _col = 0;
+        private int _row = 0;
         private Vector3 _tilePosition;
 
         private GameObject _tileGameObject;
@@ -35,17 +38,15 @@ namespace Line98
         {
             _gCost = _hCost = _fCost = 0;
             _isPassable = false;
-            _tilePosition = new Vector3(0, 0, 0);
-            _tileGameObject = null;
+            _col = _row = 0;
         }
 
-        public Tile(Vector3 tilePosition, GameObject tileObject, GameObject innerObject)
+        public Tile(int row, int col)
         {
             _gCost = _hCost = _fCost = 0;
             _isPassable = false;
-            _tilePosition = tilePosition;
-            _tileGameObject = GameObject.Instantiate(tileObject, _tilePosition, Quaternion.identity);
-            _innerObject = innerObject.GetComponent<SpriteRenderer>();
+            _row = row;
+            _col = col;
         }
 
         public bool IsPassable
@@ -77,13 +78,34 @@ namespace Line98
             }
         }
 
-        public int FCost
+        public int Col
         {
-            get => _fCost = _gCost + _hCost;
+            get => _col;
+            set { _col = value; }
         }
 
-        public void GatherElements(GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCost)
+        public int Row
         {
+            get => _row;
+            set { _row = value; }
+        }
+
+        public int FCost
+        {
+            get => _fCost;
+        }
+
+        public int CalculateFCost()
+        {
+            return _gCost + _hCost;
+        }
+
+        public void GatherElements(Vector3 tilePosition, GameObject tileObject, GameObject innerObject,
+            GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCost)
+        {
+            _tilePosition = tilePosition;
+            _tileGameObject = GameObject.Instantiate(tileObject, _tilePosition, Quaternion.identity);
+            _innerObject = innerObject.GetComponent<SpriteRenderer>();
             _textContainer = textContainer;
             _gCostTMP = gCost;
             _hCostTMP = hCost;
@@ -104,6 +126,12 @@ namespace Line98
         public Tile GetTile()
         {
             return this;
+        }
+
+        public Tile Parent
+        {
+            get => _parent;
+            set { _parent = value; }
         }
     }
 }
