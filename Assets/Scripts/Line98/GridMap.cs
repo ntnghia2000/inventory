@@ -11,27 +11,26 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Line98
 {
-    public class GridMap
+    public class GridMap<T> where T : ITile
     {
-        private Tile[,] _gridMap;
-
+        private T[,] _gridMap;
         private float _tileSize;
         private int _width = 0;
         private int _height = 0;
 
-        public GridMap(int width, int height, float tileSize)
+        public GridMap(int width, int height, float tileSize, Func<int, int, T> CreateTile)
         {
             _tileSize = tileSize;
 
             _width = width;
             _height = height;
-            _gridMap = new Tile[width, height];
+            _gridMap = new T[height, width];
 
             for (int i = 0; i < _gridMap.GetLength(0); i++)
             {
                 for (int j = 0; j < _gridMap.GetLength(1); j++)
                 {
-                    _gridMap[i, j] = new Tile(i, j);
+                    _gridMap[i, j] = CreateTile(i, j);
                 }
             }
         }
@@ -41,36 +40,22 @@ namespace Line98
             return new Vector3(width, heigth, 0) * _tileSize;
         }
 
-        public void GetXY(Vector3 worldPos, out int x, out int y)
+        public void GetXY(Vector3 worldPos, ref int x, ref int y)
         {
             x = Mathf.FloorToInt(worldPos.x / _tileSize);
             y = Mathf.FloorToInt(worldPos.y / _tileSize);
         }
 
-        public void SetValue(int x, int y, int gCost, int hCost)
+        public T GetTileByIndex(int x, int y)
         {
             if (x >= 0 && y >= 0 && x < _width && y < _height)
             {
-                _gridMap[x, y].GCost = gCost;
-                _gridMap[x, y].HCost = hCost;
+                return _gridMap[x, y];
             }
-        }
-
-        public void SetValue(Vector3 worldPos, int gCost, int hCost)
-        {
-            int x, y;
-            GetXY(worldPos, out x, out y);
-            SetValue(x, y, gCost, hCost);
-        }
-
-        public Tile GetTileByIndex(int x, int y)
-        {
-            if (x >= 0 && y >= 0 && x < _width && y < _height)
+            else
             {
-                return _gridMap[x, y].GetTile();
+                throw new IndexOutOfRangeException("Invalid indices.");
             }
-
-            return null;
         }
 
         public int Width 
@@ -83,7 +68,7 @@ namespace Line98
             get => _height;
         }
 
-        public Tile[,] GripMap
+        public T[,] GripMap
         {
             get => _gridMap;
         }

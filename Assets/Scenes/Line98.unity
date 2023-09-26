@@ -305,8 +305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 814277396}
-  _width: 3
-  _height: 3
+  _width: 4
+  _height: 4
   _tileGameObject: {fileID: 6994159858893265202, guid: 8d5e1de2d18fc86439a23abf7afa058e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -5,7 +5,7 @@ using TMPro;
 
 namespace Line98
 {
-    interface ITile
+    public interface ITile
     {
         bool IsPassable { get; set; }
         int GCost { get; set; }
@@ -13,6 +13,10 @@ namespace Line98
         int FCost { get;}
         int Col { get; set; } 
         int Row { get; set; }
+
+        void GatherElements(Vector3 tilePosition, GameObject tileObject, GameObject innerObject,
+            GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCost)
+        { }
     }
 
     public class Tile: ITile
@@ -26,13 +30,13 @@ namespace Line98
         private int _row = 0;
         private Vector3 _tilePosition;
 
-        private GameObject _tileGameObject;
-        private GameObject _textContainer;
-        private SpriteRenderer _innerObject;
+        private GameObject _tileGameObject = new GameObject();
+        private GameObject _textContainer= new GameObject();
+        private SpriteRenderer _innerObject = new SpriteRenderer();
         private TextMeshPro _gCostTMP;
         private TextMeshPro _hCostTMP;
         private TextMeshPro _fCostTMP;
-        private Color _tileColor;
+        private Color _tileColor = new Color();
 
         public Tile() 
         {
@@ -121,11 +125,6 @@ namespace Line98
         public void SetColor(Color color)
         {
             _innerObject.color = color;
-        }
-
-        public Tile GetTile()
-        {
-            return this;
         }
 
         public Tile Parent
