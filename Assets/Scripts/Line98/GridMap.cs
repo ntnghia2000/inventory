@@ -80,7 +80,7 @@ namespace Line98
             {
                 for (int j = 0; j < _gridMap.GetLength(1); j++)
                 {
-                    _gridMap[i, j].GatherElements(GetWorldPosition(i, j), tileGameObject, innerObject, textContainer, gCost, hCost, fCos);
+                    //_gridMap[i, j].GatherElements(GetWorldPosition(i, j), tileGameObject, innerObject, textContainer, gCost, hCost, fCos);
                 }
             }
         }
