@@ -16,6 +16,10 @@ namespace Line98
         [SerializeField] private GameObject _tileGameObject;
 
         private PathFinding _pathFinding;
+        private int startX = 0;
+        private int startY = 0;
+        private int endX = 0;
+        private int endY = 0;
 
         void Start()
         {
@@ -37,16 +41,22 @@ namespace Line98
         {
             if(Input.GetMouseButtonDown(0))
             {
-                int startX;
-                int startY;
-                _pathFinding.GetGrid().GetXY(GetMousePosition(), out startX, out startY);
+                _pathFinding.GetGrid().GetXY(GetMousePosition(), ref startX, ref startY);
+                Debug.Log("Start: " + startX + " " + startY);
             }
 
             if (Input.GetMouseButtonDown(1))
             {
-                int endX;
-                int endY;
-                _pathFinding.GetGrid().GetXY(GetMousePosition(), out endX, out endY);
+                if(startX >= 0 && startY >= 0)
+                {
+                    _pathFinding.GetGrid().GetXY(GetMousePosition(), ref endX, ref endY);
+                    _pathFinding.FindTile(startX, startY, endX, endY);
+                    Debug.Log("End: " + endX + " " + endY);
+                }
+                else
+                {
+                    Debug.Log("You must set Start Tile before end tile");
+                }    
             }
         }
 

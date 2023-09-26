@@ -10,7 +10,7 @@ namespace Line98
         private const int MOVE_STRAIGHT_COST = 10;
         private const int MOVE_DIAGONAL_COST = 14;
 
-        private GridMap _gridMap;
+        private GridMap<Tile> _gridMap;
         private Tile _currentTile;
 
         private List<Tile> _openList;
@@ -18,7 +18,7 @@ namespace Line98
 
         public PathFinding(int width, int height, float tileSize)
         {
-            _gridMap = new GridMap(width, height, tileSize);
+            _gridMap = new GridMap<Tile>(width, height, tileSize, (int row, int col) => new Tile(row, col));
         }
 
         public void GatherElements(GameObject tileGameObject, GameObject innerObject,
@@ -67,12 +67,14 @@ namespace Line98
                 _openList.Remove(currentTile);
                 _closeList.Add(currentTile);
 
-                foreach(Tile neighbour in GetListNeighbours(currentTile))
+                List<Tile> neighbours = GetListNeighbours(currentTile);
+
+                foreach (Tile neighbour in neighbours)
                 {
                     if(_closeList.Contains(neighbour))
                     {
                         continue;
-                    }    
+                    }
 
                     int tentativeGCost = currentTile.GCost + CalculateDistanceCost(currentTile, neighbour);
 
@@ -119,12 +121,12 @@ namespace Line98
 
                 if (currentTile.Col - 1 >= 0)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row - 1, currentTile.Col - 1));
+                    neighbours.Add(GetCurrentTile(currentTile.Row + 1, currentTile.Col - 1));
                 }
 
                 if (currentTile.Col + 1 < _gridMap.Height)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row - 1, currentTile.Col + 1));
+                    neighbours.Add(GetCurrentTile(currentTile.Row + 1, currentTile.Col + 1));
                 }
             }
 
@@ -170,8 +172,11 @@ namespace Line98
             List<Tile> path = new List<Tile>();
             path.Add(endTile);
             Tile currentTile = endTile;
+            int i = 0;
             while (currentTile.Parent != null) 
             {
+                i++;
+                Debug.Log("Tile " + i + ": " + currentTile.Parent.Row + " " + currentTile.Parent.Col);
                 path.Add(currentTile.Parent);
                 currentTile = currentTile.Parent;
             }
@@ -180,7 +185,7 @@ namespace Line98
             return path;
         }
 
-        public GridMap GetGrid()
+        public GridMap<Tile> GetGrid()
         {
             return _gridMap;
         }
