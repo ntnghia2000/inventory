@@ -61,28 +61,18 @@ namespace Line98
         public int Width 
         {
             get => _width;
+            set => _width = value;
         }
 
         public int Height
         {
             get => _height;
+            set => _height = value;
         }
 
         public T[,] GripMap
         {
             get => _gridMap;
-        }
-
-        public void CreateObjectOnTile(GameObject tileGameObject, GameObject innerObject,
-            GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCos)
-        {
-            for (int i = 0; i < _gridMap.GetLength(0); i++)
-            {
-                for (int j = 0; j < _gridMap.GetLength(1); j++)
-                {
-                    //_gridMap[i, j].GatherElements(GetWorldPosition(i, j), tileGameObject, innerObject, textContainer, gCost, hCost, fCos);
-                }
-            }
         }
     }
 }

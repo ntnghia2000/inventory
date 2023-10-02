@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 namespace Line98
 {
@@ -11,20 +12,13 @@ namespace Line98
         private const int MOVE_DIAGONAL_COST = 14;
 
         private GridMap<Tile> _gridMap;
-        private Tile _currentTile;
 
         private List<Tile> _openList;
         private List<Tile> _closeList;
 
         public PathFinding(int width, int height, float tileSize)
         {
-            _gridMap = new GridMap<Tile>(width, height, tileSize, (int row, int col) => new Tile(row, col));
-        }
-
-        public void GatherElements(GameObject tileGameObject, GameObject innerObject,
-            GameObject textContainer, TextMeshPro gCost, TextMeshPro hCost, TextMeshPro fCos)
-        {
-            _gridMap.CreateObjectOnTile(tileGameObject, innerObject, textContainer, gCost, hCost, fCos);
+            _gridMap = new GridMap<Tile>(width, height, tileSize, (int row, int col) => new Tile(row, col)) ;
         }
 
         public Tile GetCurrentTile(int x, int y)

@@ -14,6 +14,7 @@ namespace Line98
         [SerializeField] private int _width = 3;
         [SerializeField] private int _height = 3;
         [SerializeField] private GameObject _tileGameObject;
+        [SerializeField] private TileView _tileView;
 
         private PathFinding _pathFinding;
         private int startX = 0;
@@ -24,14 +25,8 @@ namespace Line98
         void Start()
         {
             float tileSize = _tileGameObject.GetComponent<SpriteRenderer>().size.x;
-            GameObject innerObject = _tileGameObject.transform.Find("Inner").gameObject;
-            GameObject textContainer = innerObject.transform.Find("CostContainer").gameObject;
-            TextMeshPro gCostTMP = textContainer.transform.Find("GCost").gameObject.GetComponent<TextMeshPro>();
-            TextMeshPro hCostTMP = textContainer.transform.Find("HCost").gameObject.GetComponent<TextMeshPro>();
-            TextMeshPro fCostTMP = textContainer.transform.Find("FCost").gameObject.GetComponent<TextMeshPro>();
 
             _pathFinding = new PathFinding(_width, _height, tileSize);
-            _pathFinding.GatherElements(_tileGameObject, innerObject, textContainer, gCostTMP, hCostTMP, fCostTMP);
 
             _camera.transform.position =
                 new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);

@@ -559,6 +559,7 @@ GameObject:
   - component: {fileID: 2724476174941863335}
   - component: {fileID: 1447063565640875292}
   - component: {fileID: 4028927352755073343}
+  - component: {fileID: 6332106976359886432}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -668,6 +669,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6994159858893265202}
   m_CullTransparentMesh: 1
+--- !u!114 &6332106976359886432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994159858893265202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0a9d6db8b3c7724d9f7bddc71dd06b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tileObject: {fileID: 6994159858893265202}
+  _textContainer: {fileID: 4681586913950855272}
+  _innerObject: {fileID: 2304108092064303628}
+  _gCostTMP: {fileID: 1366142061937559231}
+  _hCostTMP: {fileID: 2640906558433037653}
+  _fCostTMP: {fileID: 223968378696242239}
 --- !u!1 &8112380198195009095
 GameObject:
   m_ObjectHideFlags: 0
