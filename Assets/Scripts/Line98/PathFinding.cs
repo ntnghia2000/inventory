@@ -6,27 +6,22 @@ using System;
 
 namespace Line98
 {
-    public class PathFinding
+    public static class PathFinding
     {
         private const int MOVE_STRAIGHT_COST = 10;
         private const int MOVE_DIAGONAL_COST = 14;
 
-        private GridMap<Tile> _gridMap;
+        private static GridMap<Tile> _gridMap;
 
-        private List<Tile> _openList;
-        private List<Tile> _closeList;
+        private static List<Tile> _openList;
+        private static List<Tile> _closeList;
 
-        public PathFinding(int width, int height, float tileSize)
-        {
-            _gridMap = new GridMap<Tile>(width, height, tileSize, (int row, int col) => new Tile(row, col)) ;
-        }
+        //public static PathFinding(GridMap<Tile> gridMap)
+        //{
+        //    _gridMap = gridMap;
+        //}
 
-        public Tile GetCurrentTile(int x, int y)
-        {
-            return _gridMap.GetTileByIndex(x, y);
-        }
-
-        public List<Tile> FindTile(int startX, int startY, int endX, int endY)
+        public static List<Tile> FindPath(int startX, int startY, int endX, int endY)
         {
             Tile startTile = _gridMap.GetTileByIndex(startX, startY);
             Tile endTile = _gridMap.GetTileByIndex(endX, endY);
@@ -39,15 +34,15 @@ namespace Line98
                 for(int j = 0; j < _gridMap.Height; j++)
                 {
                     Tile tile = _gridMap.GetTileByIndex(i, j);
-                    tile.GCost = int.MaxValue;
-                    tile.CalculateFCost();
-                    tile.Parent = null;
+                    tile.TileData.GCost = int.MaxValue;
+                    tile.TileData.CalculateFCost();
+                    tile.Parents.TileData = null;
                 }
             }
 
-            startTile.GCost = 0;
-            startTile.HCost = CalculateDistanceCost(startTile, endTile);
-            startTile.CalculateFCost();
+            startTile.TileData.GCost = 0;
+            startTile.TileData.HCost = CalculateDistanceCost(startTile, endTile);
+            startTile.TileData.CalculateFCost();
 
             while(_openList.Count > 0)
             {
@@ -70,14 +65,14 @@ namespace Line98
                         continue;
                     }
 
-                    int tentativeGCost = currentTile.GCost + CalculateDistanceCost(currentTile, neighbour);
+                    int tentativeGCost = currentTile.TileData.GCost + CalculateDistanceCost(currentTile, neighbour);
 
-                    if(tentativeGCost < neighbour.GCost)
+                    if(tentativeGCost < neighbour.TileData.GCost)
                     {
-                        neighbour.Parent = currentTile;
-                        neighbour.GCost = tentativeGCost;
-                        neighbour.HCost = CalculateDistanceCost(neighbour, endTile);
-                        neighbour.CalculateFCost();
+                        neighbour.Parents.TileData = currentTile.TileData;
+                        neighbour.TileData.GCost = tentativeGCost;
+                        neighbour.TileData.HCost = CalculateDistanceCost(neighbour, endTile);
+                        neighbour.TileData.CalculateFCost();
 
                         if(!_openList.Contains(neighbour))
                         {
@@ -90,69 +85,74 @@ namespace Line98
             return _openList;
         }
 
-        private List<Tile> GetListNeighbours(Tile currentTile)
+        private static List<Tile> GetListNeighbours(Tile currentTile)
         {
             List<Tile> neighbours = new List<Tile>();
 
-            if(currentTile.Row - 1 >= 0)
+            if(currentTile.TileData.Row - 1 >= 0)
             {
-                neighbours.Add(GetCurrentTile(currentTile.Row - 1, currentTile.Col));
+                neighbours.Add(GetCurrentTile(currentTile.TileData.Row - 1, currentTile.TileData.Col));
 
-                if(currentTile.Col - 1 >= 0)
+                if(currentTile.TileData.Col - 1 >= 0)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row - 1, currentTile.Col - 1));
+                    neighbours.Add(GetCurrentTile(currentTile.TileData.Row - 1, currentTile.TileData.Col - 1));
                 }
 
-                if(currentTile.Col + 1 < _gridMap.Height)
+                if(currentTile.TileData.Col + 1 < _gridMap.Height)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row - 1, currentTile.Col + 1));
+                    neighbours.Add(GetCurrentTile(currentTile.TileData.Row - 1, currentTile.TileData.Col + 1));
                 }
             }
             
-            if(currentTile.Row + 1 < _gridMap.Width)
+            if(currentTile.TileData.Row + 1 < _gridMap.Width)
             {
-                neighbours.Add(GetCurrentTile(currentTile.Row + 1, currentTile.Col));
+                neighbours.Add(GetCurrentTile(currentTile.TileData.Row + 1, currentTile.TileData.Col));
 
-                if (currentTile.Col - 1 >= 0)
+                if (currentTile.TileData.Col - 1 >= 0)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row + 1, currentTile.Col - 1));
+                    neighbours.Add(GetCurrentTile(currentTile.TileData.Row + 1, currentTile.TileData.Col - 1));
                 }
 
-                if (currentTile.Col + 1 < _gridMap.Height)
+                if (currentTile.TileData.Col + 1 < _gridMap.Height)
                 {
-                    neighbours.Add(GetCurrentTile(currentTile.Row + 1, currentTile.Col + 1));
+                    neighbours.Add(GetCurrentTile(currentTile.TileData.Row + 1, currentTile.TileData.Col + 1));
                 }
             }
 
-            if(currentTile.Col - 1 >= 0)
+            if(currentTile.TileData.Col - 1 >= 0)
             {
-                neighbours.Add(GetCurrentTile(currentTile.Row, currentTile.Col - 1));
+                neighbours.Add(GetCurrentTile(currentTile.TileData.Row, currentTile.TileData.Col - 1));
             }
             
-            if(currentTile.Col + 1 < _gridMap.Height)
+            if(currentTile.TileData.Col + 1 < _gridMap.Height)
             {
-                neighbours.Add(GetCurrentTile(currentTile.Row, currentTile.Col + 1));
+                neighbours.Add(GetCurrentTile(currentTile.TileData.Row, currentTile.TileData.Col + 1));
             }
 
             return neighbours;
         }
 
-        private int CalculateDistanceCost(Tile a, Tile b)
+        private static Tile GetCurrentTile(int row, int col)
         {
-            int xDistance = Mathf.Abs(a.Row -  b.Row);
-            int yDistance = Mathf.Abs(a.Col - b.Col);
+            return _gridMap.GetTileByIndex(row, col);
+        }
+
+        private static int CalculateDistanceCost(Tile a, Tile b)
+        {
+            int xDistance = Mathf.Abs(a.TileData.Row -  b.TileData.Row);
+            int yDistance = Mathf.Abs(a.TileData.Col - b.TileData.Col);
             int remaining = Mathf.Abs(xDistance - yDistance);
 
             return MOVE_STRAIGHT_COST * remaining + MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance);
         }
 
-        private Tile GetLowestFCost(List<Tile> tiles)
+        private static Tile GetLowestFCost(List<Tile> tiles)
         {
             Tile lowestTile = tiles[0];
 
             for(int i = 0; i < tiles.Count;i++)
             {
-                if (tiles[i].FCost < lowestTile.FCost)
+                if (tiles[i].TileData.FCost < lowestTile.TileData.FCost)
                 {
                     lowestTile = tiles[i];
                 }    
@@ -161,27 +161,22 @@ namespace Line98
             return lowestTile;
         }
 
-        private List<Tile> GetPath(Tile endTile)
+        private static List<Tile> GetPath(Tile endTile)
         {
             List<Tile> path = new List<Tile>();
             path.Add(endTile);
             Tile currentTile = endTile;
             int i = 0;
-            while (currentTile.Parent != null) 
+            while (currentTile.Parents != null) 
             {
                 i++;
-                Debug.Log("Tile " + i + ": " + currentTile.Parent.Row + " " + currentTile.Parent.Col);
-                path.Add(currentTile.Parent);
-                currentTile = currentTile.Parent;
+                Debug.Log("Tile " + i + ": " + currentTile.Parents.TileData.Row + " " + currentTile.Parents.TileData.Col);
+                path.Add(currentTile.Parents);
+                currentTile = currentTile.Parents;
             }
             path.Reverse();
 
             return path;
-        }
-
-        public GridMap<Tile> GetGrid()
-        {
-            return _gridMap;
         }
     }
 }

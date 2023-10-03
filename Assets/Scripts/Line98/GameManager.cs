@@ -14,9 +14,8 @@ namespace Line98
         [SerializeField] private int _width = 3;
         [SerializeField] private int _height = 3;
         [SerializeField] private GameObject _tileGameObject;
-        [SerializeField] private TileView _tileView;
+        [SerializeField] private Tile _tileView;
 
-        private PathFinding _pathFinding;
         private int startX = 0;
         private int startY = 0;
         private int endX = 0;
@@ -26,8 +25,6 @@ namespace Line98
         {
             float tileSize = _tileGameObject.GetComponent<SpriteRenderer>().size.x;
 
-            _pathFinding = new PathFinding(_width, _height, tileSize);
-
             _camera.transform.position =
                 new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10f);
         }
@@ -36,7 +33,6 @@ namespace Line98
         {
             if(Input.GetMouseButtonDown(0))
             {
-                _pathFinding.GetGrid().GetXY(GetMousePosition(), ref startX, ref startY);
                 Debug.Log("Start: " + startX + " " + startY);
             }
 
@@ -44,8 +40,6 @@ namespace Line98
             {
                 if(startX >= 0 && startY >= 0)
                 {
-                    _pathFinding.GetGrid().GetXY(GetMousePosition(), ref endX, ref endY);
-                    _pathFinding.FindTile(startX, startY, endX, endY);
                     Debug.Log("End: " + endX + " " + endY);
                 }
                 else
