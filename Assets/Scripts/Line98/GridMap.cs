@@ -11,7 +11,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace Line98
 {
-    public class GridMap<T> where T : ITile
+    public class GridMap<T>: MonoBehaviour where T : Tile
     {
         private T[,] _gridMap;
         private float _tileSize;

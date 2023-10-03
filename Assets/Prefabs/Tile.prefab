@@ -558,7 +558,6 @@ GameObject:
   - component: {fileID: 1018385836372471247}
   - component: {fileID: 2724476174941863335}
   - component: {fileID: 1447063565640875292}
-  - component: {fileID: 4028927352755073343}
   - component: {fileID: 6332106976359886432}
   m_Layer: 0
   m_Name: Tile
@@ -661,14 +660,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!222 &4028927352755073343
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6994159858893265202}
-  m_CullTransparentMesh: 1
 --- !u!114 &6332106976359886432
 MonoBehaviour:
   m_ObjectHideFlags: 0
